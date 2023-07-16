@@ -3,6 +3,7 @@ import L from 'leaflet';
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
 import './App.css';
 import 'leaflet/dist/leaflet.css';
+import Sidebar from './componets/sidebar'
 import cities from './CityList';
 
 //Resert markers because they don't work by default for some reason
@@ -20,7 +21,7 @@ const defaultZoom = 8;
 function App() {
   const mapRef = useRef();
 
-  function handleOnFlyTo(coordinates) {
+   function handleMapFly(coordinates) {
     const { current = {} } = mapRef;
     const { leafletElement: map } = current;
 
@@ -45,24 +46,7 @@ function App() {
           })
         }
       </Map>
-      <div className="sidebar">
-        {
-          cities.map(function(city){
-              return(
-                <div>
-                  <h2>{city.name}</h2>
-                  <p>{city.country}</p>
-                  <p>First Visit: {city.date.toISOString().slice(0,10)}</p>
-                  <p>
-                    <button onClick={() => handleOnFlyTo(city.coordinates)}>
-                      Go there
-                    </button>
-                  </p>
-                </div>
-              )
-          })
-        }
-      </div>
+      <Sidebar callback = {handleMapFly}></Sidebar>
     </div>
   );
 }
