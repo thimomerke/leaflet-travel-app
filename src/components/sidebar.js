@@ -1,11 +1,11 @@
 
 import React from 'react';
-import cities from '../CityList';
  
     export default function Sidebar (props) {
-      return <div className="sidebar">
+      return(
+      <div className="Sidebar">
       {
-        cities.map(function(city){
+        props.citylist.map(function(city){
             return(
               <div>
                 <h2>{city.name}</h2>
@@ -20,5 +20,6 @@ import cities from '../CityList';
             )
         })
       }
-    </div>;
+    </div>
+    );
     }

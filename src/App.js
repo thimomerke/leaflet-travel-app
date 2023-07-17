@@ -1,9 +1,10 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import L from 'leaflet';
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
 import './App.css';
 import 'leaflet/dist/leaflet.css';
-import Sidebar from './componets/sidebar'
+import Sidebar from './components/sidebar';
+import AddCity from './components/add_city';
 import cities from './CityList';
 
 //Resert markers because they don't work by default for some reason
@@ -19,7 +20,9 @@ const defaultCenter = [49.488888, 8.469167];
 const defaultZoom = 8;
 
 function App() {
-  const mapRef = useRef();
+  const mapRef = React.useRef();
+  const cityListRef = React.useRef(cities);
+  const [cityList, setCityList] = React.useState(cityListRef.current);
 
    function handleMapFly(coordinates) {
     const { current = {} } = mapRef;
@@ -30,12 +33,17 @@ function App() {
     });
   }
 
+  function addCity(dict){
+    //alert(dict.name)
+    setCityList((current) => { return [...current, dict]; })
+  }
+
   return (
     <div className="App">
       <Map ref={mapRef} center={defaultCenter} zoom={defaultZoom}>
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution="&copy; <a href=&quot;https://www.openstreetmap.org/copyright&quot;>OpenStreetMap</a> contributors" />
         {
-          cities.map(function(city){
+          cityList.map(function(city){
               return(
                 <Marker position={city.coordinates}>
                 <Popup>
@@ -46,7 +54,8 @@ function App() {
           })
         }
       </Map>
-      <Sidebar callback = {handleMapFly}></Sidebar>
+      <AddCity callback = {addCity}></AddCity>
+      <Sidebar citylist = {cityList} callback = {handleMapFly}></Sidebar>
     </div>
   );
 }
