@@ -9,6 +9,7 @@ import cities from './CityList';
 import { db } from './firebase'
 import {
   collection,
+  onSnapshot,
   getDocs,
   addDoc,
   updateDoc,
@@ -44,10 +45,21 @@ function App() {
     });
   }
 
-  function addCity(dict){
-    //alert(dict.name)
-    //setCityList((current) => { return [...current, dict]; })
+  //create new city entry
+  async function addCity(dict){
+    await addDoc(cityListCollectionRef, dict);  
   }
+
+  /*const updateCity = async (id, age) => {
+    const cityDoc = doc(db, "travel-cities", id);
+    const newFields = { age: age + 1 };
+    await updateDoc(userDoc, newFields);
+  };
+
+  const deleteUser = async (id) => {
+    const userDoc = doc(db, "travel-cities", id);
+    await deleteDoc(userDoc);
+  };*/
 
   //load city list from firebase
   React.useEffect(() => {
@@ -67,7 +79,7 @@ function App() {
         {isLoadingCities === false ? (
           cityList.map(function(city){
             return(
-                <Marker position={[city.coordinates._lat, city.coordinates._long]}>
+                <Marker position={[city.coordinates[0], city.coordinates[1]]}>
                 <Popup>
                   {[city.name]}
                 </Popup>

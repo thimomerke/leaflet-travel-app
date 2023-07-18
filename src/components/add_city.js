@@ -32,14 +32,13 @@ export default function AddCity (props) {
 
       //wait for results and state update before submitting form
       useEffect(() => {
-
         if (city.length > 0){
           cityCoordinates.current = [city[0].lat, city[0].lon]
             var resultDict = {
               coordinates: cityCoordinates.current,
               name: nameInput.current.value,
               country: countryInput.current.value,
-              date: new Date(dateInput.current.value)
+              date: dateInput.current.value
             }
             //alert(resultDict.coordinates)
             if (calledOnce.current === false)

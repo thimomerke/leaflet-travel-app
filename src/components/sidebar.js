@@ -12,7 +12,7 @@ import React from 'react';
                 <p>{city.country}</p>
                 <p>First Visit: {city.date.toString()/*.toISOString().slice(0,10)*/}</p>
                 <p>
-                  <button onClick={() => props.callback([city.coordinates._lat, city.coordinates._long])}>
+                  <button onClick={() => props.callback([city.coordinates[0], city.coordinates[1]])}>
                     Go there
                   </button>
                 </p>
