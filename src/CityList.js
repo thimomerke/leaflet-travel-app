@@ -1,4 +1,4 @@
-const cities = [
+let cities = [
     {
         coordinates: [49.488888, 8.469167],
         name: "Mannheim",
