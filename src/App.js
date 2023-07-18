@@ -6,8 +6,17 @@ import 'leaflet/dist/leaflet.css';
 import Sidebar from './components/sidebar';
 import AddCity from './components/add_city';
 import cities from './CityList';
+import { db } from './firebase'
+import {
+  collection,
+  getDocs,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  doc,
+} from "firebase/firestore";
 
-//Resert markers because they don't work by default for some reason
+//Resert marker icons because they don't work by default for some reason
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 let DefaultIcon = L.icon({
@@ -23,6 +32,8 @@ function App() {
   const mapRef = React.useRef();
   const cityListRef = React.useRef(cities);
   const [cityList, setCityList] = React.useState(cityListRef.current);
+  const cityListCollectionRef = collection(db, "travel-cities");
+  const [isLoadingCities, setLoadingCities] = React.useState(true);
 
    function handleMapFly(coordinates) {
     const { current = {} } = mapRef;
@@ -35,24 +46,35 @@ function App() {
 
   function addCity(dict){
     //alert(dict.name)
-    setCityList((current) => { return [...current, dict]; })
+    //setCityList((current) => { return [...current, dict]; })
   }
+
+  //load city list from firebase
+  React.useEffect(() => {
+    const getCities = async () => {
+      const data = await getDocs(cityListCollectionRef);
+      setCityList(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+      //required to signal loading finished (otherwise <Marker> breaks due to coordinates being undefined)
+      setLoadingCities(false)
+    };
+    getCities();
+  }, []);
 
   return (
     <div className="App">
       <Map ref={mapRef} center={defaultCenter} zoom={defaultZoom}>
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution="&copy; <a href=&quot;https://www.openstreetmap.org/copyright&quot;>OpenStreetMap</a> contributors" />
-        {
+        {isLoadingCities === false ? (
           cityList.map(function(city){
-              return(
-                <Marker position={city.coordinates}>
+            return(
+                <Marker position={[city.coordinates._lat, city.coordinates._long]}>
                 <Popup>
-                  {city.name}
+                  {[city.name]}
                 </Popup>
               </Marker>
               )
           })
-        }
+        ) : (<></>)}
       </Map>
       <AddCity callback = {addCity}></AddCity>
       <Sidebar citylist = {cityList} callback = {handleMapFly}></Sidebar>
