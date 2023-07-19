@@ -17,6 +17,7 @@ import {
   doc,
 } from "firebase/firestore";
 
+
 //Resert marker icons because they don't work by default for some reason
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
@@ -73,7 +74,9 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
+    <div className="App container-fluid">
+      <div className="row">
+      <div className="map col order-first">
       <Map ref={mapRef} center={defaultCenter} zoom={defaultZoom}>
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution="&copy; <a href=&quot;https://www.openstreetmap.org/copyright&quot;>OpenStreetMap</a> contributors" />
         {isLoadingCities === false ? (
@@ -88,8 +91,12 @@ function App() {
           })
         ) : (<></>)}
       </Map>
-      <AddCity callback = {addCity}></AddCity>
-      <Sidebar citylist = {cityList} callback = {handleMapFly}></Sidebar>
+      </div>
+      <div className="sidebar col order-last">
+        <AddCity className="form" callback = {addCity}></AddCity>
+        <Sidebar className="list" citylist = {cityList} callback = {handleMapFly}></Sidebar>
+      </div>
+      </div>
     </div>
   );
 }

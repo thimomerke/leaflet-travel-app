@@ -1,9 +1,10 @@
 
 import React from 'react';
+import './sidebar.css';
  
     export default function Sidebar (props) {
       return(
-      <div className="Sidebar">
+      <div className="list-sidebar">
       {
         props.citylist.map(function(city){
             return(

@@ -1,4 +1,5 @@
 import React, {useEffect,useState} from 'react';
+import './add_city.css';
 
 export default function AddCity (props) {
     const [city, setCity] = useState([])
@@ -50,17 +51,17 @@ export default function AddCity (props) {
 
 
     return (
-        <div>
+        <div className="add-city">
             
 <fieldset>
-<form onSubmit={fetchCoordinates}>
+<form className="add-city-form" onSubmit={fetchCoordinates}>
 
 <legend>Add City</legend>
 
 
 <div class="form-group">
-  <label class="col-md-4 control-label" for="name">Name</label>  
-  <div class="col-md-4">
+  <label class="col control-label" for="name">Name</label>  
+  <div class="col">
   <input ref={nameInput} id="name" name="name" type="text" placeholder="e.g. Berlin" class="form-control input-md" required=""/>
     
   </div>
@@ -68,31 +69,31 @@ export default function AddCity (props) {
 
 
 <div class="form-group">
-  <label class="col-md-4 control-label" for="country">Country</label>  
-  <div class="col-md-4">
+  <label class="col control-label" for="country">Country</label>  
+  <div class="col">
   <input ref={countryInput} id="country" name="country" type="text" placeholder="e.g. Germany" class="form-control input-md" required=""/>   
   </div>
 </div>
 
-<div class="form-group">
-  <label class="col-md-4 control-label" for="date">Coordinates</label>  
-  <div class="col-md-4">
+<div class="form-group hide" display="none">
+  <label class="col control-label" for="date">Coordinates</label>  
+  <div class="col">
   <input id="date" name="date" type="text" placeholder="e.g. 49.4103619, 8.4141602" value={city.length > 0 && city[0].boundingbox[0]+", "+city[0].boundingbox[2]} onChange={(e) => setCity(e.target.value)} class="form-control input-md" required=""/>  
   </div>
 </div>
 
 
 <div class="form-group">
-  <label class="col-md-4 control-label" for="date">Date</label>  
-  <div class="col-md-4">
+  <label class="col control-label" for="date">Date</label>  
+  <div class="col">
   <input ref={dateInput} id="date" name="date" type="text" placeholder="e.g. 1999-12-31" class="form-control input-md" required=""/>   
   </div>
 </div>
 
 
 <div class="form-group">
-  <label class="col-md-4 control-label" for="submit"></label>
-  <div class="col-md-4">
+  <label class="col control-label" for="submit"></label>
+  <div class="col">
   <button type="submit">Submit</button>
   </div>
 </div>
